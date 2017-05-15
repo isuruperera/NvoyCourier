@@ -25,10 +25,12 @@ import com.proximosolutions.nvoycourier.R;
 
 public class ParcelProfile extends AppCompatActivity {
 
-    private Button removeParcelBtn;
-    private Button trackParcelBtn;
-    private Button viewLocationBtn;
-    private Button viewTransactionsBtn;
+    private Button acceptBtn;
+    private Button rejectBtn;
+    private Button navigateToSenderBtn;
+    private Button streetviewSenderBtn;
+    private Button navigateToReceiverBtn;
+    private Button streetviewReceiverBtn;
     private String currentUserType;
     private String customerState;
     private Parcel currentParcel;
@@ -103,6 +105,115 @@ public class ParcelProfile extends AppCompatActivity {
             }
         });
 
+        acceptBtn = (Button)findViewById(R.id.btn_accept_parcel);
+        acceptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentParcel.getStatus()!=Parcel.NEW ){
+                    databaseReference.child("Parcels").child(currentParcel.getParcelID()).child("status").setValue(Parcel.ACCEPTED);
+                    ((TextView)findViewById(R.id.text_parcel_status)).setText("Waiting for courier");
+                }
+            }
+        });
+
+        rejectBtn = (Button)findViewById(R.id.btn_reject_parcel);
+        rejectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentParcel.getStatus()!=Parcel.NEW || currentParcel.getStatus()!=Parcel.ACCEPTED ){
+                    databaseReference.child("Parcels").child(currentParcel.getParcelID()).child("status").setValue(Parcel.CANCELLED);
+                    ((TextView)findViewById(R.id.text_parcel_status)).setText("Cancelled Parcel");
+                }
+            }
+        });
+
+        navigateToReceiverBtn = (Button)findViewById(R.id.btn_navigate_receiver);
+        navigateToReceiverBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentParcel.getStatus() != Parcel.DELIVERED || currentParcel.getStatus() != Parcel.CANCELLED) {
+                    Uri gmmIntentUri;
+
+
+                    StringBuilder uriString = new StringBuilder("google.navigation:q=");
+                    uriString.append(receiver.getLocation().getLatitude());
+                    uriString.append(",");
+                    uriString.append(receiver.getLocation().getLongitude());
+                    uriString.append("&avoid=tfh");
+
+                    gmmIntentUri = Uri.parse(uriString.toString());
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+
+                }
+            }
+
+
+        });
+
+        navigateToSenderBtn = (Button)findViewById(R.id.btn_navigate_sender);
+        navigateToSenderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentParcel.getStatus() != Parcel.DELIVERED || currentParcel.getStatus() != Parcel.CANCELLED) {
+                    Uri gmmIntentUri;
+
+
+                    StringBuilder uriString = new StringBuilder("google.navigation:q=");
+                    uriString.append(sender.getLocation().getLatitude());
+                    uriString.append(",");
+                    uriString.append(sender.getLocation().getLongitude());
+                    uriString.append("&avoid=tfh");
+
+                    gmmIntentUri = Uri.parse(uriString.toString());
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+
+                }
+            }
+
+
+        });
+
+        streetviewReceiverBtn = (Button)findViewById(R.id.btn_view_receiver);
+        streetviewReceiverBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentParcel.getStatus() != Parcel.DELIVERED || currentParcel.getStatus() != Parcel.CANCELLED) {
+                    StringBuilder uriString = new StringBuilder("google.streetview:cbll=");
+                    uriString.append(receiver.getLocation().getLatitude());
+                    uriString.append(",");
+                    uriString.append(receiver.getLocation().getLongitude());
+
+                    Uri gmmIntentUri = Uri.parse(uriString.toString());
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+
+                }
+            }
+        });
+
+        streetviewSenderBtn = (Button)findViewById(R.id.btn_view_sender);
+        streetviewSenderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentParcel.getStatus() != Parcel.DELIVERED || currentParcel.getStatus() != Parcel.CANCELLED) {
+                    StringBuilder uriString = new StringBuilder("google.streetview:cbll=");
+                    uriString.append(sender.getLocation().getLatitude());
+                    uriString.append(",");
+                    uriString.append(sender.getLocation().getLongitude());
+
+                    Uri gmmIntentUri = Uri.parse(uriString.toString());
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+
+                }
+            }
+        });
         /*removeParcelBtn = (Button) findViewById(R.id.btn_remove_parcel);
         removeParcelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,6 +277,7 @@ public class ParcelProfile extends AppCompatActivity {
     }
 
     private void updateView(){
+        ((android.support.design.widget.CollapsingToolbarLayout)findViewById(R.id.user_profile_toolbar)).setTitle(currentParcel.getParcelID());
         ((TextView)findViewById(R.id.text_parcel_contact_courier)).setText(courier.getContactNumber());
         ((TextView)findViewById(R.id.text_parcel_contact_courier)).setOnClickListener(new View.OnClickListener() {
             @Override
