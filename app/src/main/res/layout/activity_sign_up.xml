@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.proximosolutions.nvoycourier.Controller.SignUp">
+
+
+    <ImageView
+        android:id="@+id/app_bar_image"
+        android:layout_width="wrap_content"
+        android:layout_height="163dp"
+        android:src="@drawable/add_courier_img"
+        android:scaleType="fitCenter" />
+    <ProgressBar
+        android:id="@+id/add_courier_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <AutoCompleteTextView
+            android:id="@+id/sign_up_firstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/first_name"
+            android:maxLines="1"
+            android:layout_marginTop="15dp"
+            android:singleLine="true"
+            android:inputType="text" />
+
+        <AutoCompleteTextView
+            android:id="@+id/sign_up_lastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/last_name"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="text" />
+
+        <AutoCompleteTextView
+            android:id="@+id/sign_up_national_ic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/national_id"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="text" />
+
+        <AutoCompleteTextView
+            android:id="@+id/sign_up_contact_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/contact_number"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="phone" />
+
+        <AutoCompleteTextView
+            android:id="@+id/sign_up_email_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="textEmailAddress" />
+
+        <AutoCompleteTextView
+            android:id="@+id/sign_up_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="textPassword" />
+        <AutoCompleteTextView
+            android:id="@+id/sign_up_password_retype"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Re-type password"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="textPassword" />
+
+    </LinearLayout>
+
+</ScrollView>
+
+    <Button
+        android:text="Sign up"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="50dp"
+        android:id="@+id/btn_sign_up"
+        android:background="@drawable/ripple_effect"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textSize="20dp"/>
+
+
+
+
+</LinearLayout>

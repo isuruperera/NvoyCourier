@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1057778556176",
+    "firebase_url": "https://nvoycourier2.firebaseio.com",
+    "project_id": "nvoycourier2",
+    "storage_bucket": "nvoycourier2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057778556176:android:cd9004520ec0f649",
+        "android_client_info": {
+          "package_name": "com.proximosolutions.nvoycourier"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1057778556176-4nr0v96riflvhpcva3drd5m0putgknbc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.proximosolutions.nvoycourier",
+            "certificate_hash": "22f291d32e505b856aac56a6bcb9ab45b1830658"
+          }
+        },
+        {
+          "client_id": "1057778556176-g8ijvvhko5r12m61moj93u8r7lcq5jve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG3ecbbFh0iwr1kzxa4L_q_dkf29ucieU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1057778556176-g8ijvvhko5r12m61moj93u8r7lcq5jve.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

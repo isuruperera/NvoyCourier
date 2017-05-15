@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:orientation="vertical"
+    android:id="@+id/menu_slide_up_layout">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ADD DELIVERY"
+        android:layout_margin="3dp"
+        android:textAlignment="center"
+        android:id="@+id/nvoy_text"
+        android:textSize="25dp"
+
+        android:textColor="@color/white"
+        android:background="@color/colorAccent"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/text_selected_courier"
+        android:text=""
+        android:textSize="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:paddingTop="0dp"
+        >
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="CANCEL"
+        android:id = "@+id/btn_add_delivery_cancel_1"
+        android:layout_gravity="start"
+        android:background="@drawable/ripple_effect"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:layout_marginRight="5dp"
+        />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="ACCEPT"
+        android:id = "@+id/btn_add_delivery_accept"
+        android:layout_gravity="start"
+        android:background="@drawable/ripple_effect"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:layout_marginRight="0.5dp"
+        />
+
+        </LinearLayout>
+
+    <TextView
+        android:id = "@+id/text_pkg_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PACKAGE DETAILS"
+        android:layout_marginTop="15dp"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        android:textColor="@color/white"
+        android:background="@color/colorAccent"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/text_delivery_method"
+        android:text=""
+        android:textSize="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:paddingTop="0dp"
+        >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recipient: "
+        android:textSize="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        />
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:textSize="50sp"
+
+        android:id = "@+id/spinner_recipients"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="20dp"
+        android:contextClickable="true"
+        />
+</LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Parcel Description"
+            android:id = "@+id/parcel_description"
+            android:maxLines="1"
+            android:inputType="text"
+            android:maxLength="100"
+            android:layout_marginBottom="10dp"
+            />
+
+    </ScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id = "@+id/text_delivery_fair"
+        android:text="Delivery Fair: "
+        android:textSize="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:paddingTop="0dp"
+        >
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="CANCEL"
+            android:id = "@+id/btn_add_delivery_cancel_2"
+            android:layout_gravity="start"
+            android:background="@drawable/ripple_effect"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_marginRight="5dp"
+            />
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="REQUEST"
+            android:id = "@+id/btn_add_delivery_request"
+            android:layout_gravity="start"
+            android:background="@drawable/ripple_effect"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_marginRight="0.5dp"
+            />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

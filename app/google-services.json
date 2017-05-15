@@ -1,0 +1,161 @@
+{
+  "project_info": {
+    "project_number": "62572591032",
+    "firebase_url": "https://nvoy-bcda4.firebaseio.com",
+    "project_id": "nvoy-bcda4",
+    "storage_bucket": "nvoy-bcda4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62572591032:android:7584e4115bab02e8",
+        "android_client_info": {
+          "package_name": "com.proximosolutions.nvoyadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "62572591032-qbm4d4o7242d9076o5okaa1rum53jafs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.proximosolutions.nvoyadmin",
+            "certificate_hash": "22f291d32e505b856aac56a6bcb9ab45b1830658"
+          }
+        },
+        {
+          "client_id": "62572591032-0dp12bjh3ott940kpns71j3qpkat5jan.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6jh5ELRqMpkqUVzsReXkTRrQWd2wW688"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "62572591032-0dp12bjh3ott940kpns71j3qpkat5jan.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62572591032:android:2934f2e7c7295574",
+        "android_client_info": {
+          "package_name": "com.proximosolutions.nvoyadmin1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "62572591032-0dp12bjh3ott940kpns71j3qpkat5jan.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6jh5ELRqMpkqUVzsReXkTRrQWd2wW688"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62572591032:android:549eae2f548a4763",
+        "android_client_info": {
+          "package_name": "com.proximosolutions.nvoycustomer3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "62572591032-342oaarp8k79v2dg595qiipn2g3s3mnv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.proximosolutions.nvoycustomer3",
+            "certificate_hash": "22f291d32e505b856aac56a6bcb9ab45b1830658"
+          }
+        },
+        {
+          "client_id": "62572591032-0dp12bjh3ott940kpns71j3qpkat5jan.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6jh5ELRqMpkqUVzsReXkTRrQWd2wW688"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "62572591032-0dp12bjh3ott940kpns71j3qpkat5jan.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62572591032:android:cd9004520ec0f649",
+        "android_client_info": {
+          "package_name": "com.proximosolutions.nvoycourier"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "62572591032-0dp12bjh3ott940kpns71j3qpkat5jan.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6jh5ELRqMpkqUVzsReXkTRrQWd2wW688"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

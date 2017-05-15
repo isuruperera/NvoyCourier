@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_height="192dp"
+        android:layout_width="match_parent">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:toolbarId="@+id/toolbar"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
+            app:contentScrim="?attr/colorPrimary"
+            app:title="Test Name"
+            app:expandedTitleTextAppearance="@style/CollapsedAppBar"
+            app:expandedTitleGravity="bottom"
+            android:id="@+id/user_profile_toolbar"
+            >
+
+            <ImageView
+                android:id="@+id/app_bar_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/logo_mockup"
+                android:scaleType="fitXY" />
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@color/colorAccent"
+                android:backgroundTintMode="screen"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="32dp"
+                android:id="@+id/user_image"
+
+                android:src="@mipmap/ic_menu_parcel"/>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_width="match_parent"></android.support.v7.widget.Toolbar>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
+
+        <LinearLayout
+            android:id="@+id/activity_user_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="0dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:paddingTop="0dp"
+            android:weightSum="1"
+            tools:context="com.proximosolutions.nvoyadmin.Controller.UserProfile">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="?android:listDivider"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:showDividers="middle">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+
+                    android:paddingTop="0dp">
+
+                    <Button
+                        android:id="@+id/btn_accept_parcel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_gravity="start"
+                        android:layout_marginRight="0.5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/ripple_effect"
+                        android:text="ACCEPT"
+                        android:textColor="@color/common_google_signin_btn_text_dark_default"
+                        android:textSize="15dp" />
+
+                    <Button
+                        android:id="@+id/btn_reject_parcel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:layout_gravity="end"
+                        android:layout_weight="1"
+                        android:background="@drawable/ripple_effect"
+                        android:text="REJECT"
+                        android:textColor="@color/common_google_signin_btn_text_dark_default"
+                        android:textSize="15dp"
+                        android:layout_marginRight="0.5dp"/>
+
+
+
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+
+                    android:paddingTop="0dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_navigate_sender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="60dp"
+                            android:layout_gravity="start"
+                            android:layout_marginRight="0.5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/ripple_effect"
+                            android:text="NAVIGATE TO SENDER"
+                            android:textColor="@color/common_google_signin_btn_text_dark_default"
+                            android:textSize="10dp" />
+
+                        <Button
+                            android:id="@+id/btn_view_sender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="60dp"
+                            android:layout_gravity="end"
+                            android:layout_weight="1"
+                            android:background="@drawable/ripple_effect"
+                            android:text="SENDER STREETVIEW"
+                            android:textColor="@color/common_google_signin_btn_text_dark_default"
+                            android:textSize="10dp"
+                            android:layout_marginRight="0.5dp"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.5"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_navigate_receiver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="start"
+
+                            android:layout_weight="1"
+                            android:background="@drawable/ripple_effect"
+                            android:text="NAVIGATE TO RECEIVER"
+                            android:textColor="@color/common_google_signin_btn_text_dark_default"
+                            android:textSize="10dp"
+                            android:layout_marginRight="0.5dp"/>
+
+                        <Button
+                            android:id="@+id/btn_view_receiver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="60dp"
+                            android:layout_gravity="start"
+
+                            android:layout_weight="1"
+                            android:background="@drawable/ripple_effect"
+                            android:text="RECEIVER STREETVIEW"
+                            android:textColor="@color/common_google_signin_btn_text_dark_default"
+                            android:textSize="10dp" />
+
+                    </LinearLayout>
+
+
+
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="@dimen/activity_vertical_margin">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:text="Receiver" />
+
+                    <TextView
+                        android:id="@+id/text_parcel_receiver"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:text="Receiver Name"
+                        android:textSize="20dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="@dimen/activity_vertical_margin">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:paddingBottom="0dp"
+                        android:paddingTop="2dp"
+                        android:text="Contact Receiver" />
+
+                    <TextView
+                        android:id="@+id/text_parcel_contact_receiver"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:text="Receiver Contact No"
+                        android:textSize="20dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="@dimen/activity_vertical_margin">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="2dp"
+                        android:text="Sender" />
+
+                    <TextView
+                        android:id="@+id/text_parcel_courier"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:text="Courier Name"
+                        android:textSize="20dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="@dimen/activity_vertical_margin">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="2dp"
+                        android:text="Contact Sender" />
+
+                    <TextView
+                        android:id="@+id/text_parcel_contact_courier"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:text="Courier Contact No"
+                        android:textSize="20dp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="@dimen/activity_vertical_margin">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="2dp"
+                        android:text="Parcel Status"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/text_parcel_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:text="Parcel Status"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="@dimen/activity_vertical_margin">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="2dp"
+                        android:text="Delivery Fair"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/text_parcel_delivery_fair"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:text="Delivery Fair"
+                        android:textSize="20dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>
