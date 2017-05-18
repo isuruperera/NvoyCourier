@@ -22,7 +22,11 @@ public class Parcel implements Serializable {
     public static final int ACCEPTED = 3;
     public static final int IN_TRANSIT = 4;
     public static final int DELIVERED = 5;
-    public static final int PENDING_ACCEPTANCE = 5;
+    public static final int TIME_OUT = 6;
+    public static final int PICKUP = 7;
+    public static final int MARKED_DELIVERED = 8;
+    public static final int CUST_MARKED_NOT_DELIVERED = 9;
+    public static final int CUST_MARKED_NOT_COLLECTED = 10;
 
     public String getParcelID() {
         return parcelID;

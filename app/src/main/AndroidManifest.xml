@@ -90,6 +90,7 @@
         </activity>
 
         <activity android:name="com.proximosolutions.nvoycourier.Controller.ParcelProfile"
+            android:launchMode="singleInstance"
             android:label="Parcel Details">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

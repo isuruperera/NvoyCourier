@@ -120,7 +120,7 @@ public class ParcelsActivity extends AppCompatActivity
                     }
                 });
 
-        databaseReference.child("Parcels").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("Parcels").addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -132,7 +132,7 @@ public class ParcelsActivity extends AppCompatActivity
 
                     String name = tempParcel.getItemDescription();
                     String parcelID = tempParcel.getParcelID();
-                    String parcelStatus = "Unknown";
+                    String parcelStatus = "Expired";
                     int tempParcelStatus = tempParcel.getStatus();
                     if(tempParcelStatus==Parcel.NEW){
                         parcelStatus = "New Parcel";
@@ -144,6 +144,14 @@ public class ParcelsActivity extends AppCompatActivity
                         parcelStatus = "In transit";
                     }else if(tempParcelStatus==Parcel.DELIVERED){
                         parcelStatus = "Delivered";
+                    }else if(tempParcelStatus==Parcel.MARKED_DELIVERED) {
+                        parcelStatus = "Marked Delivered";
+                    }else if(tempParcelStatus==Parcel.CUST_MARKED_NOT_COLLECTED) {
+                        parcelStatus = "Customer marked as not collected";
+                    }else if(tempParcelStatus==Parcel.CUST_MARKED_NOT_DELIVERED) {
+                        parcelStatus = "Customer marked as not delivered";
+                    }else if(tempParcelStatus==Parcel.TIME_OUT) {
+                        parcelStatus = "Expired before response";
                     }
                     if(myParcelKeys.contains(parcelID)){
                         ChildRow childRow = new ChildRow(parcelID,parcelStatus,R.mipmap.ic_menu_parcel);
@@ -176,7 +184,6 @@ public class ParcelsActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_window, menu);
-
 
         searchItem = menu.findItem(R.id.action_search1);
 

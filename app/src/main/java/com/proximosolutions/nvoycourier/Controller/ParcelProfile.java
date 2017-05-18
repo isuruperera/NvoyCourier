@@ -1,16 +1,18 @@
 package com.proximosolutions.nvoycourier.Controller;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,6 +42,8 @@ public class ParcelProfile extends AppCompatActivity {
     private boolean isSenderFetched = false;
     private boolean isReceiverFetched = false;
     private boolean isCourierFetched = false;
+    private ProgressDialog progressDialog;
+    private ValueEventListener valueEventListenerUpdateParcelUI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +51,35 @@ public class ParcelProfile extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);;
         setContentView(R.layout.activity_parcel_profile);
+
+        valueEventListenerUpdateParcelUI = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final Parcel updatedParcel = dataSnapshot.getValue(Parcel.class);
+                updateParcelUI(updatedParcel);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
         if(savedInstanceState == null){
             Bundle extras = getIntent().getExtras();
             if(extras != null){
                 currentParcel = (Parcel)extras.get("parcel");
+
             }
         }else{
             currentParcel = (Parcel)savedInstanceState.getSerializable("parcel");
+
         }
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = firebaseDatabase.getReference();
+
+        //databaseReference.child("Parcels").child(currentParcel.getParcelID()).addValueEventListener(valueEventListenerUpdateParcelUI);
+
         databaseReference.child("Customers").child(currentParcel.getReceiverID()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -106,28 +129,69 @@ public class ParcelProfile extends AppCompatActivity {
         });
 
         acceptBtn = (Button)findViewById(R.id.btn_accept_parcel);
+        rejectBtn = (Button)findViewById(R.id.btn_reject_parcel);
+        navigateToReceiverBtn = (Button)findViewById(R.id.btn_navigate_receiver);
+        navigateToSenderBtn = (Button)findViewById(R.id.btn_navigate_sender);
+        streetviewReceiverBtn = (Button)findViewById(R.id.btn_view_receiver);
+        streetviewSenderBtn = (Button)findViewById(R.id.btn_view_sender);
         acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentParcel.getStatus()!=Parcel.NEW ){
+
+                if(currentParcel.getStatus()==Parcel.NEW ){
                     databaseReference.child("Parcels").child(currentParcel.getParcelID()).child("status").setValue(Parcel.ACCEPTED);
                     ((TextView)findViewById(R.id.text_parcel_status)).setText("Waiting for courier");
+                    rejectBtn.setText("CANCEL");
+                    rejectBtn.setEnabled(true);
+                    acceptBtn.setEnabled(false);
+                    currentParcel.setStatus(Parcel.ACCEPTED);
+                    updateView();
+                }else if(currentParcel.getStatus()==Parcel.ACCEPTED){
+                    databaseReference.child("Parcels").child(currentParcel.getParcelID()).child("status").setValue(Parcel.PICKUP);
+                    ((TextView)findViewById(R.id.text_parcel_status)).setText("Waiting for courier");
+                    rejectBtn.setText("CANCEL");
+                    rejectBtn.setEnabled(false);
+                    acceptBtn.setEnabled(true);
+                    currentParcel.setStatus(Parcel.PICKUP);
+                    updateView();
+                }else if(currentParcel.getStatus()==Parcel.IN_TRANSIT){
+                    databaseReference.child("Parcels").child(currentParcel.getParcelID()).child("status").setValue(Parcel.MARKED_DELIVERED);
+                    ((TextView)findViewById(R.id.text_parcel_status)).setText("Marked Delivered");
+                    rejectBtn.setText("");
+                    rejectBtn.setEnabled(false);
+                    acceptBtn.setEnabled(false);
+                    currentParcel.setStatus(Parcel.MARKED_DELIVERED);
+                    updateView();
+                }else if(currentParcel.getStatus()==Parcel.CUST_MARKED_NOT_COLLECTED){
+                   /* databaseReference.child("Parcels").child(currentParcel.getParcelID()).child("status").setValue(Parcel.ACCEPTED);
+                    ((TextView)findViewById(R.id.text_parcel_status)).setText("Waiting for courier");
+                    rejectBtn.setText("CANCEL");
+                    rejectBtn.setEnabled(false);
+                    acceptBtn.setEnabled(true);
+                    currentParcel.setStatus(Parcel.PICKUP);
+                    updateView();
+                    updateView();*/
                 }
             }
         });
 
-        rejectBtn = (Button)findViewById(R.id.btn_reject_parcel);
+
         rejectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentParcel.getStatus()!=Parcel.NEW || currentParcel.getStatus()!=Parcel.ACCEPTED ){
+                if(currentParcel.getStatus()==Parcel.NEW || currentParcel.getStatus()==Parcel.ACCEPTED ){
                     databaseReference.child("Parcels").child(currentParcel.getParcelID()).child("status").setValue(Parcel.CANCELLED);
                     ((TextView)findViewById(R.id.text_parcel_status)).setText("Cancelled Parcel");
+                    acceptBtn.setText("");
+                    acceptBtn.setActivated(false);
+                    currentParcel.setStatus(Parcel.CANCELLED);
+                    updateView();
+
                 }
             }
         });
 
-        navigateToReceiverBtn = (Button)findViewById(R.id.btn_navigate_receiver);
+
         navigateToReceiverBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,7 +216,7 @@ public class ParcelProfile extends AppCompatActivity {
 
         });
 
-        navigateToSenderBtn = (Button)findViewById(R.id.btn_navigate_sender);
+
         navigateToSenderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,7 +241,7 @@ public class ParcelProfile extends AppCompatActivity {
 
         });
 
-        streetviewReceiverBtn = (Button)findViewById(R.id.btn_view_receiver);
+
         streetviewReceiverBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,7 +260,7 @@ public class ParcelProfile extends AppCompatActivity {
             }
         });
 
-        streetviewSenderBtn = (Button)findViewById(R.id.btn_view_sender);
+
         streetviewSenderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,93 +278,174 @@ public class ParcelProfile extends AppCompatActivity {
                 }
             }
         });
-        /*removeParcelBtn = (Button) findViewById(R.id.btn_remove_parcel);
-        removeParcelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        updateParcelUI(currentParcel);
 
-                if(currentParcel.getStatus()!=Parcel.IN_TRANSIT || currentParcel.getStatus()!=Parcel.DELIVERED  ){
-                    databaseReference.child("Parcels").child(currentParcel.getParcelID()).child("status").setValue(Parcel.CANCELLED);
-                }else{
-                    Toast.makeText(ParcelProfile.this, "You cannot remove this right now",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        trackParcelBtn = (Button) findViewById(R.id.btn_track_parcel);
-        trackParcelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri gmmIntentUri;
-                if(currentParcel.getStatus()==Parcel.ACCEPTED){
-
-                    StringBuilder uriString = new StringBuilder("google.navigation:q=");
-                    uriString.append(currentParcel.getCurrentLocation().getLatitude());
-                    uriString.append(",");
-                    uriString.append(currentParcel.getCurrentLocation().getLongitude());
-                    uriString.append("&avoid=tfh");
-
-                    gmmIntentUri = Uri.parse(uriString.toString());
-                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                    mapIntent.setPackage("com.google.android.apps.maps");
-                    startActivity(mapIntent);
+    }
 
 
+    private void updateParcelUI(final Parcel parcel){
+        if(parcel.getStatus() ==Parcel.TIME_OUT){
+            //showProgressWindow(false);
+            new AlertDialog.Builder(ParcelProfile.this)
+                    .setTitle("The request has expired")
+                    .setMessage("The request has expired because of the delay. Next time, respond to the request within 2 minutes")
 
-                }
+                    .setNegativeButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
 
+                            dialog.dismiss();
+                            ParcelProfile.this.finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
 
+        }
+        if(parcel.getStatus() == Parcel.CUST_MARKED_NOT_COLLECTED){
 
-            }
-        });
+            new AlertDialog.Builder(ParcelProfile.this)
+                    .setTitle("Did you really pick up the parcel?")
+                    .setMessage("The customer has marked the item as not picked up. Pick up the parcel from customer and try again.")
 
-        viewLocationBtn = (Button) findViewById(R.id.btn_view_location);
-        viewLocationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StringBuilder uriString = new StringBuilder("google.streetview:cbll=");
-                uriString.append(currentParcel.getCurrentLocation().getLatitude());
-                uriString.append(",");
-                uriString.append(currentParcel.getCurrentLocation().getLongitude());
+                    .setNegativeButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                            final DatabaseReference databaseReference = firebaseDatabase.getReference();
 
-                Uri gmmIntentUri = Uri.parse(uriString.toString());
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                startActivity(mapIntent);
-            }
-        });
-*/
+                            databaseReference.child("Parcels").child(currentParcel.getParcelID()).child("status").setValue(Parcel.ACCEPTED);
 
+                            acceptBtn.setText("PICK UP");
+                            acceptBtn.setEnabled(true);
+                            parcel.setStatus(Parcel.ACCEPTED);
+                            currentParcel=parcel;
+                            dialog.dismiss();
+
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+        if(parcel.getStatus() ==Parcel.IN_TRANSIT ){
+
+            acceptBtn.setText("FINISH");
+            rejectBtn.setText("");
+            rejectBtn.setEnabled(false);
+            currentParcel = parcel;
+        }
+        if(parcel.getStatus() ==Parcel.CUST_MARKED_NOT_DELIVERED){
+
+            new AlertDialog.Builder(ParcelProfile.this)
+                    .setTitle("Did you really deliver?")
+                    .setMessage("The customer has marked the item as not delivered. Deliver the parcel to the customer and try again.")
+
+                    .setNegativeButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                            final DatabaseReference databaseReference = firebaseDatabase.getReference();
+
+                            databaseReference.child("Parcels").child(currentParcel.getParcelID()).child("status").setValue(Parcel.IN_TRANSIT);
+
+                            acceptBtn.setText("FINISH");
+                            acceptBtn.setEnabled(true);
+                            parcel.setStatus(Parcel.ACCEPTED);
+                            currentParcel=parcel;
+                            dialog.dismiss();
+
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+        if(parcel.getStatus() ==Parcel.MARKED_DELIVERED){
+            acceptBtn.setText("FINISH");
+            rejectBtn.setText("");
+            acceptBtn.setEnabled(true);
+            rejectBtn.setEnabled(false);
+            currentParcel.setStatus(Parcel.IN_TRANSIT);
+            currentParcel = parcel;
+        }
+
+        if(parcel.getStatus() ==Parcel.DELIVERED || parcel.getStatus()==Parcel.CANCELLED ){
+
+            acceptBtn.setText("");
+            rejectBtn.setText("");
+            acceptBtn.setEnabled(false);
+            rejectBtn.setEnabled(false);
+            currentParcel = parcel;
+        }
+
+    }
+
+    private void disableNavigation(){
+        navigateToReceiverBtn.setEnabled(false);
+        navigateToSenderBtn.setEnabled(false);
+        streetviewReceiverBtn.setEnabled(false);
+        streetviewSenderBtn.setEnabled(false);;
+        navigateToReceiverBtn.setText("");
+        navigateToSenderBtn.setText("");
+        streetviewReceiverBtn.setText("");
+        streetviewSenderBtn.setText("");
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
 
 
     }
 
     private void updateView(){
-        ((android.support.design.widget.CollapsingToolbarLayout)findViewById(R.id.user_profile_toolbar)).setTitle(currentParcel.getParcelID());
-        ((TextView)findViewById(R.id.text_parcel_contact_courier)).setText(courier.getContactNumber());
-        ((TextView)findViewById(R.id.text_parcel_contact_courier)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String number = courier.getContactNumber();
-                Uri call = Uri.parse("tel:" + number);
-                Intent surf = new Intent(Intent.ACTION_DIAL, call);
-                startActivity(surf);
-            }
-        });
-        ((TextView)findViewById(R.id.text_parcel_contact_receiver)).setText(receiver.getContactNumber());
-        ((TextView)findViewById(R.id.text_parcel_contact_receiver)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String number = receiver.getContactNumber();
-                Uri call = Uri.parse("tel:" + number);
-                Intent surf = new Intent(Intent.ACTION_DIAL, call);
-                startActivity(surf);
-            }
-        });
-        ((TextView)findViewById(R.id.text_parcel_receiver)).setText(receiver.getFirstName()+" "+receiver.getLastName());
-        ((TextView)findViewById(R.id.text_parcel_courier)).setText(courier.getFirstName()+" "+courier.getLastName());
-        ((TextView)findViewById(R.id.text_parcel_delivery_fair)).setText(String.valueOf(currentParcel.getDeliveryFair())+" LKR");
+
+        if(currentParcel.getStatus()==Parcel.NEW){
+            ((android.support.design.widget.CollapsingToolbarLayout)findViewById(R.id.user_profile_toolbar)).setTitle(currentParcel.getParcelID());
+            ((TextView)findViewById(R.id.text_parcel_contact_sender)).setText("Currently unavailable");
+            ((TextView)findViewById(R.id.text_parcel_description)).setText(currentParcel.getItemDescription());
+
+            ((TextView)findViewById(R.id.text_parcel_contact_receiver)).setText("Currently unavailable");
+
+            ((TextView)findViewById(R.id.text_parcel_receiver)).setText(receiver.getFirstName()+" "+receiver.getLastName());
+            ((TextView)findViewById(R.id.text_parcel_courier)).setText(sender.getFirstName()+" "+sender.getLastName());
+            ((TextView)findViewById(R.id.text_parcel_delivery_fair)).setText(String.valueOf(currentParcel.getDeliveryFair())+" LKR");
+
+        }else if(currentParcel.getStatus()==Parcel.ACCEPTED || currentParcel.getStatus()==Parcel.IN_TRANSIT || currentParcel.getStatus()==Parcel.PICKUP ){
+            ((android.support.design.widget.CollapsingToolbarLayout)findViewById(R.id.user_profile_toolbar)).setTitle(currentParcel.getParcelID());
+            ((TextView)findViewById(R.id.text_parcel_contact_sender)).setText(sender.getContactNumber());
+            ((TextView)findViewById(R.id.text_parcel_contact_sender)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String number = sender.getContactNumber();
+                    Uri call = Uri.parse("tel:" + number);
+                    Intent surf = new Intent(Intent.ACTION_DIAL, call);
+                    startActivity(surf);
+                }
+            });
+            ((TextView)findViewById(R.id.text_parcel_contact_receiver)).setText(receiver.getContactNumber());
+            ((TextView)findViewById(R.id.text_parcel_contact_receiver)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String number = receiver.getContactNumber();
+                    Uri call = Uri.parse("tel:" + number);
+                    Intent surf = new Intent(Intent.ACTION_DIAL, call);
+                    startActivity(surf);
+                }
+            });
+            ((TextView)findViewById(R.id.text_parcel_receiver)).setText(receiver.getFirstName()+" "+receiver.getLastName());
+            ((TextView)findViewById(R.id.text_parcel_courier)).setText(sender.getFirstName()+" "+sender.getLastName());
+            ((TextView)findViewById(R.id.text_parcel_delivery_fair)).setText(String.valueOf(currentParcel.getDeliveryFair())+" LKR");
+
+        }else{
+            ((android.support.design.widget.CollapsingToolbarLayout)findViewById(R.id.user_profile_toolbar)).setTitle(currentParcel.getParcelID());
+            ((TextView)findViewById(R.id.text_parcel_contact_sender)).setText("Unavailable");
+
+            ((TextView)findViewById(R.id.text_parcel_contact_receiver)).setText("Unavailable");
+
+            ((TextView)findViewById(R.id.text_parcel_receiver)).setText(receiver.getFirstName()+" "+receiver.getLastName());
+            ((TextView)findViewById(R.id.text_parcel_courier)).setText(sender.getFirstName()+" "+sender.getLastName());
+            ((TextView)findViewById(R.id.text_parcel_delivery_fair)).setText(String.valueOf(currentParcel.getDeliveryFair())+" LKR");
+
+        }
+        ((TextView)findViewById(R.id.text_parcel_description)).setText(currentParcel.getItemDescription());
+
         switch(currentParcel.getStatus()){
             case Parcel.NEW:
                 ((TextView)findViewById(R.id.text_parcel_status)).setText("New Parcel");
@@ -310,14 +455,63 @@ public class ParcelProfile extends AppCompatActivity {
                 break;
             case Parcel.CANCELLED:
                 ((TextView)findViewById(R.id.text_parcel_status)).setText("Cancelled Parcel");
+                disableNavigation();
                 break;
             case Parcel.DELIVERED:
                 ((TextView)findViewById(R.id.text_parcel_status)).setText("Successfully Delivered");
+                disableNavigation();
+                break;
+            case Parcel.CUST_MARKED_NOT_DELIVERED:
+                ((TextView)findViewById(R.id.text_parcel_status)).setText("Customer marked as not delivered");
+                break;
+            case Parcel.MARKED_DELIVERED:
+                ((TextView)findViewById(R.id.text_parcel_status)).setText("Courier marked as delivered");
+                break;
+            case Parcel.CUST_MARKED_NOT_COLLECTED:
+                ((TextView)findViewById(R.id.text_parcel_status)).setText("Customer marked as not collected");
+                rejectBtn.setText("CANCEL");
                 break;
             case Parcel.IN_TRANSIT:
                 ((TextView)findViewById(R.id.text_parcel_status)).setText("Parcel In Transit");
                 break;
+            case Parcel.TIME_OUT:
+                ((TextView)findViewById(R.id.text_parcel_status)).setText("Time out before responding");
+                disableNavigation();
+                break;
         }
+        if(currentParcel.getStatus()==Parcel.ACCEPTED){
+            acceptBtn.setText("PICK UP");
+            acceptBtn.setEnabled(true);
+        }
+        if(currentParcel.getStatus()==Parcel.DELIVERED){
+            rejectBtn.setText("");
+            rejectBtn.setEnabled(false);
+        }
+        if(currentParcel.getStatus()==Parcel.DELIVERED){
+            acceptBtn.setText("");
+            acceptBtn.setEnabled(false);
+        }
+        if(currentParcel.getStatus()==Parcel.ACCEPTED){
+            rejectBtn.setText("CANCEL");
+            rejectBtn.setEnabled(true);
+        }
+
+        if(currentParcel.getStatus()==Parcel.IN_TRANSIT){
+            acceptBtn.setText("FINISH");
+            acceptBtn.setEnabled(true);
+            rejectBtn.setText("");
+            rejectBtn.setEnabled(false);
+        }
+        if(currentParcel.getStatus()==Parcel.CANCELLED || currentParcel.getStatus()==Parcel.TIME_OUT ){
+            acceptBtn.setText("");
+            acceptBtn.setEnabled(false);
+            rejectBtn.setText("");
+            rejectBtn.setEnabled(false);
+
+        }
+
+
+
     }
 
     @Override
@@ -348,6 +542,11 @@ public class ParcelProfile extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference databaseReference = firebaseDatabase.getReference();
+
+        databaseReference.child("Parcels").child(currentParcel.getParcelID()).addValueEventListener(valueEventListenerUpdateParcelUI);
+
         //lockIntent = true;
     }
 
@@ -355,23 +554,42 @@ public class ParcelProfile extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         //lockIntent = false;
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference databaseReference = firebaseDatabase.getReference();
+
+        databaseReference.child("Parcels").child(currentParcel.getParcelID()).removeEventListener(valueEventListenerUpdateParcelUI);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         //lockIntent = true;
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference databaseReference = firebaseDatabase.getReference();
+
+        //databaseReference.child("Parcels").child(currentParcel.getParcelID()).addValueEventListener(valueEventListenerUpdateParcelUI);
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //lockIntent = false;
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference databaseReference = firebaseDatabase.getReference();
+
+        databaseReference.child("Parcels").child(currentParcel.getParcelID()).removeEventListener(valueEventListenerUpdateParcelUI);
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference databaseReference = firebaseDatabase.getReference();
+
+        databaseReference.child("Parcels").child(currentParcel.getParcelID()).removeEventListener(valueEventListenerUpdateParcelUI);
+
         //lockIntent = false;
     }
 
@@ -384,6 +602,11 @@ public class ParcelProfile extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference databaseReference = firebaseDatabase.getReference();
+
+        databaseReference.child("Parcels").child(currentParcel.getParcelID()).addValueEventListener(valueEventListenerUpdateParcelUI);
+
         //lockIntent = false;
     }
 
